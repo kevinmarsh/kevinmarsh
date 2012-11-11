@@ -1,0 +1,113 @@
+/*  October, 2012
+    Kevin Marsh */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: LightGrey;
+    color: #222;
+}
+
+header {
+    text-align: center;
+    padding: 40px 0;
+    margin: 20px 0;
+    color: rgb(220, 220, 220);
+    background: #222 url('../img/micro_carbon.png') repeat top left;
+}
+
+header h1 {
+    font-family: "Changa One", serif;
+    font-size: 60px;
+    margin: 30px 0;
+}
+
+.hidden {
+    display: none;
+}
+.bold {
+    font-weight: bold;
+}
+
+.contentTitles *, .contentBody *, nav * {
+    -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
+       -moz-transition: all 0.3s ease-out;  /* FF4+ */
+        -ms-transition: all 0.3s ease-out;  /* IE10 */
+         -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
+            transition: all 0.3s ease-out;
+}
+.contentTitles {
+    text-align: center;
+}
+.contentTitles div {
+    position: relative;
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    padding: 6px;
+    margin: 0 12px 20px;
+    color: rgb(220, 220, 220);
+    background: #222 url('../img/micro_carbon.png') repeat top left;
+    /*border: solid 2px gray;*/
+    border-radius: 4px;
+    cursor: pointer;
+    opacity: 0.6;
+}
+.contentTitles div img {
+    display: inline-block;
+    /*background-color: SlateGrey;*/
+    height: 50px;
+    width: 50px;
+    border: none;
+}
+.contentTitles div:hover {
+    opacity: 1;
+}
+.contentTitles.selected div {
+    height: 60px;
+    width: 60px;
+}
+.contentTitles.selected div p {
+    opacity: 0;
+}
+.contentTitles.selected div p.showText {
+    opacity: 1;
+    top: 0;
+    z-index: 10;
+}
+.contentTitles div.selected {
+    border-color: #222;
+    opacity: 1;
+}
+
+.contentBody {
+    width: 600px;
+    /*padding: 12px;*/
+    margin: 0 auto;
+    /*min-height: 300px;*/
+    /*border: 2px solid #222;*/
+    background: rgb(240, 240, 240);
+    border-radius: 4px;
+}
+.contentBody div {
+    padding: 12px;
+}
+
+/* FOOTER
+------------------------------------------------------------------------------*/
+footer {
+    opacity: 0.4;
+    text-align: center;
+    font-size: 8pt;
+    margin: 20px auto 4px;
+}
+footer:hover {
+    opacity: 0.8;
+}
+footer a {
+    text-decoration: none;
+    color:;
+}
+footer img {
+    height: 8pt;
+    vertical-align: middle;
+}
