@@ -48,5 +48,5 @@ $(document).ready( function() {
             $(this).children('p').removeClass('showText');
         }
     );
-    $('.contentTitles div img').attr('src', 'img/test.png');
+    // $('.contentTitles div img').attr('src', 'img/test.png');
 })

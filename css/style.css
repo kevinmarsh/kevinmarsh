@@ -27,7 +27,14 @@ header h1 {
 .bold {
     font-weight: bold;
 }
-
+span.link,
+span.about,
+span.code,
+span.projects,
+span.contact {
+    text-decoration: none;
+    border-bottom: dotted 1px;
+}
 .contentTitles *, .contentBody *, nav * {
     -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
        -moz-transition: all 0.3s ease-out;  /* FF4+ */
