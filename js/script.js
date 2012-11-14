@@ -1,5 +1,5 @@
 $(document).ready( function() {
-    $('.contentBody div, footer').hide();
+    $('.contentBody div').hide();
     $('.contentTitles div').click( function() {
         var $contentTitles = $(this).parent()
         var clicked = $(this).attr("class");

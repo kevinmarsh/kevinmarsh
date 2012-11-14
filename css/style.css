@@ -74,7 +74,7 @@ nav * {
     opacity: 0.8;
 }
 .contentTitles.selected div {
-    height: 60px;
+    height: 32px;
     width: 60px;
 }
 .contentTitles.selected div p {
@@ -88,7 +88,7 @@ nav * {
 ------------------------------------------------------------------------------*/
 .contentBody {
     width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
     background: rgb(240, 240, 240);
     border-radius: 4px;
 }
@@ -99,10 +99,13 @@ nav * {
 /* FOOTER
 ------------------------------------------------------------------------------*/
 footer {
+    position: fixed;
+    bottom: 2px;
+    width: 100%;
     opacity: 0.4;
     text-align: center;
     font-size: 8pt;
-    margin: 20px auto 4px;
+    z-index: -10;
 }
 footer:hover {
     opacity: 0.8;
