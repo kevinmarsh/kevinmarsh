@@ -5,6 +5,7 @@ body {
     padding: 0;
     background-color: #D3D3D3; /*LightGrey*/
     color: #222;
+    font-family: 'Cabin', Helvetica, Arial, sans-serif;
 }
 header {
     text-align: center;
@@ -15,20 +16,21 @@ header {
 }
 header h1 {
     font-family: "Changa One", Cambria, Georgia, Times, Times New Roman, serif;
+    font-family: 'Lobster', Georgia, Times, serif;
     font-size: 60px;
     margin: 30px 0;
 }
 a,
 a:visited,
-span.link,
-span.about,
-span.code,
-span.projects,
-span.contact {
+span.link {
     color: #222;
     text-decoration: none;
     border-bottom: dotted 1px;
     cursor: pointer;
+}
+a img,
+img {
+    border: none;
 }
 .bold {
     font-weight: bold;
@@ -50,7 +52,7 @@ nav * {
 }
 .contentTitles div {
     position: relative;
-    display: inline-block;
+    display: inline-block; *display: inline; zoom: 1; /*Hack for IE*/
     height: 100px;
     width: 100px;
     padding: 6px;
@@ -59,6 +61,7 @@ nav * {
     border-radius: 4px;
     cursor: pointer;
     opacity: 0.5;
+    font-family: 'Lobster', Georgia, Times, serif;
 }
 .contentTitles div img {
     height: 50px;
@@ -91,6 +94,9 @@ nav * {
     margin: 20px auto;
     background: rgb(240, 240, 240);
     border-radius: 4px;
+}
+.contentBody h2 {
+    font-family: 'Lobster', Georgia, Times, serif;
 }
 .contentBody div {
     padding: 12px;
