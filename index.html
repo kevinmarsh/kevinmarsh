@@ -8,7 +8,6 @@
     <meta name="keywords" content="web developer, Python, Django, HTML, CSS, Javascript, jQuery">
     <meta name="author" content="Kevin Marsh">
     <meta name="viewport" content="width=device-width">
-
     <!--[if lt IE 9]><script type="text/javascript" src="js/html5shiv.js"></script><![endif]-->
     <link rel="icon" type="image/png" href="img/favicon.png" />
     <link rel="stylesheet" href="css/style.css">
@@ -79,6 +78,14 @@
             <h2>Contact Me</h2>
             <p>If need to get in touch or wish to collaborate, <a href="http://www.google.com/recaptcha/mailhide/d?k=01Il8t58lSTBT_dr1XVjV78g==&amp;c=Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501Il8t58lSTBT_dr1XVjV78g\75\75\46c\75Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address"> click to reveal my email address</a>.</p>
         </div> <!-- .contact -->
+        <div class="iconAttributes">
+            <ul>
+                <li><img src="img/about.svg" alt="About" /><a href="http://thenounproject.com/noun/user/#icon-No6150" target="_blank"><em>User</em></a> designed by <a href="http://thenounproject.com/tlb" target="_blank">Thomas Le Bas</a> from The Noun Project</li>
+                <li><img src="img/code.svg" alt="Code" /><a href="http://thenounproject.com/noun/user/#icon-No6150" target="_blank"><em>Code</em></a> in the Public Domain</li>
+                <li><img src="img/projects.svg" alt="Projects" /><a href="http://thenounproject.com/noun/notepad/#icon-No6169" target="_blank"><em>Notepad</em></a> designed by <a href="http://thenounproject.com/tlb" target="_blank">Thomas Le Bas</a> from The Noun Project</li>
+                <li><img src="img/contact.svg" alt="Contact" /><a href="http://thenounproject.com/noun/mail/#icon-No6101" target="_blank"><em>Mail</em></a> designed by <a href="http://thenounproject.com/tlb" target="_blank">Thomas Le Bas</a> from The Noun Project</li>
+            </ul>
+        </div> <!-- .iconAttributes -->
     </div>
 
     <footer>
@@ -89,18 +96,16 @@
             <img src="img/cc.png" />
         </a>
          // 
-        Icons from <a href="http://pc.de/icons/#Dusseldorf" target="_blank">pc.de/icons</a>
+        <span class="icon"><span>Icons from The Noun Project</span></span>
     </footer>
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
     <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.8.2.min.js">\x3C/script>')</script>
     <!--[if lt IE 9]>
-        <script type="text/javascript">
-            $('img').each(function() {
-                $(this).attr('src', $(this).attr('src').replace(/svg/, 'png'));
-            });
-        </script>
-    <![endif]-->
+    <script type="text/javascript">
+        $('img').each(function() { $(this).attr('src', $(this).attr('src').replace(/svg/, 'png')) });
+        $('footer span.icon').html('Icons from <a href="http://pc.de/icons/#Dusseldorf" target="_blank">pc.de/icons</a>')
+    </script><![endif]-->
     <script type="text/javascript" src="js/script.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];

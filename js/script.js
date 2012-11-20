@@ -33,6 +33,12 @@ $(document).ready( function() {
         var link = $(this).attr('class').split(' ')[1]
         selectDiv(link, 0);
     });
+    $('span.icon span').click(function () {
+        $('.contentTitles div.selected').removeClass('selected');
+        $('.contentBody div').fadeOut().delay(400);
+        $('.contentTitles .contact').addClass('selected');
+        $('.contentBody .iconAttributes').fadeIn();
+    })
     function selectDiv(clicked, dir) {
         var next;
         if (clicked == 'about' && dir == -1) {
