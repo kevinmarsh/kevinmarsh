@@ -1,10 +1,10 @@
 $(document).ready( function() {
-    $('.contentBody div').hide();
-    $('.contentTitles div').click( function() {
-        var $contentTitles = $(this).parent()
+    $('.contentBody section').hide();
+    $('nav li').click( function() {
+        var $nav = $('nav')
         var clicked = $(this).attr("class");
-        if (!$contentTitles.hasClass('selected')) { // If this is the first time clicked
-            $contentTitles.addClass('selected');
+        if (!$nav.hasClass('selected')) { // If this is the first time clicked
+            $nav.addClass('selected');
             $('footer').slideDown();
             $(this).addClass('selected');
             $('.contentBody .' + clicked).fadeIn();
@@ -14,13 +14,13 @@ $(document).ready( function() {
         }
     });
     $(document).keydown(function (e) {
-        var $contentTitles = $('.contentTitles')
-        if (!$contentTitles.hasClass('selected')) {
-            $contentTitles.addClass('selected');
+        var $nav = $('nav')
+        if (!$nav.hasClass('selected')) {
+            $nav.addClass('selected');
             $('footer').slideDown();
             selectDiv('about', 0);
         } else {
-            var selected = $('.contentTitles .selected').attr("class").split(' ')[0];
+            var selected = $('nav .selected').attr("class").split(' ')[0];
             var keyCode = e.keyCode || e.which;
             if (keyCode == 39) { // right
                 selectDiv(selected, 1);
@@ -29,14 +29,14 @@ $(document).ready( function() {
             }
         }
     });
-    $('.contentBody div span.link').click(function (){
+    $('.contentBody section span.link').click(function (){
         var link = $(this).attr('class').split(' ')[1]
         selectDiv(link, 0);
     });
     $('span.icon span').click(function () {
-        $('.contentTitles div.selected').removeClass('selected');
-        $('.contentBody div').fadeOut().delay(400);
-        $('.contentTitles .contact').addClass('selected');
+        $('nav li.selected').removeClass('selected');
+        $('.contentBody section').fadeOut().delay(400);
+        $('nav .contact').addClass('selected');
         $('.contentBody .iconAttributes').fadeIn();
     })
     function selectDiv(clicked, dir) {
@@ -49,9 +49,9 @@ $(document).ready( function() {
             var divs = ['about', 'code', 'projects', 'contact'];
             next = divs[$.inArray(clicked, divs) + dir]
         };
-        $('.contentTitles div.selected').removeClass('selected');
-        $('.contentTitles .' + next).addClass('selected');
-        $('.contentBody div').fadeOut().delay(400);
+        $('nav li.selected').removeClass('selected');
+        $('nav .' + next).addClass('selected');
+        $('.contentBody section').fadeOut().delay(400);
         $('.contentBody .' + next).fadeIn();
     }
 })

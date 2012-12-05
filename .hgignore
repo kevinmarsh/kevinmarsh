@@ -2,5 +2,6 @@ syntax: glob
 
 *.orig
 *.rej
-*.pyc
+*.bak
+*.todo
 *~
