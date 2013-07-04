@@ -54,7 +54,7 @@ nav ul {
 nav li {
     display: inline-block; *display: inline; zoom: 1; /*Hack for IE*/
     height: 100px;
-    width: 100px;
+    max-width: 100px;
     padding: 6px;
     margin: 0 12px;
     color: #222;
@@ -82,7 +82,7 @@ nav li:hover {
 }
 nav.selected li {
     height: 32px;
-    width: 60px;
+    max-width: 60px;
 }
 nav.selected li span {
     display: none;
@@ -96,8 +96,9 @@ nav li.selected {
 /* CONTENT Sections
 ------------------------------------------------------------------------------*/
 .contentBody {
-    width: 600px;
-    margin: 20px auto;
+    min-width: 200px;
+    max-width: 600px;
+    margin: 20px auto 30px;
     background: rgb(240, 240, 240);
     border-radius: 4px;
 }
