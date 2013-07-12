@@ -47,7 +47,7 @@ nav * {
   /* Opera 10.5+ */
   transition: all 0.3s ease-out; }
 
-/* Navigation
+/* NAVIGATION
 ------------------------------------------------------------------------------*/
 nav ul {
   margin: 0;
@@ -97,7 +97,7 @@ nav.selected img {
 nav.selected span {
   display: none; }
 
-/* CONTENT Sections
+/* CONTENT SECTIONS
 ------------------------------------------------------------------------------*/
 .contentBody {
   min-width: 200px;
@@ -124,19 +124,33 @@ nav.selected span {
     background-color: white;
     background: rgba(255, 255, 255, 0.6) no-repeat 8px center;
     background-size: 40px 40px;
-    cursor: pointer; }
+    cursor: default;
+    font-size: 14px;
+    line-height: 1.4; }
+    #gitFeed ul li[url] {
+      cursor: pointer; }
     #gitFeed ul li:hover {
       background-color: #fff698;
       /*LightYellow*/
       background-size: 45px 45px; }
     #gitFeed ul li.PushEvent {
       background-image: url("../img/git-push.png"); }
-    #gitFeed ul li.ForkEvent {
+    #gitFeed ul li.ForkEvent, #gitFeed ul li.ForkApplyEvent {
       background-image: url("../img/git-fork.png"); }
     #gitFeed ul li.CreateEvent {
       background-image: url("../img/git-create.png"); }
-    #gitFeed ul li.IssueCommentEvent {
+    #gitFeed ul li.DeleteEvent {
+      background-image: url("../img/git-delete.png"); }
+    #gitFeed ul li.IssueCommentEvent, #gitFeed ul li.CommitCommentEvent, #gitFeed ul li.PullRequestReviewCommentEvent {
       background-image: url("../img/git-comment.png"); }
+    #gitFeed ul li.DownloadEvent, #gitFeed ul li.PullRequestEvent {
+      background-image: url("../img/git-pull.png"); }
+    #gitFeed ul li.WatchEvent {
+      background-image: url("../img/git-watch.png"); }
+    #gitFeed ul li.FollowEvent, #gitFeed ul li.MemberEvent, #gitFeed ul li.PublicEvent, #gitFeed ul li.TeamAddEvent {
+      background-image: url("../img/git-user.png"); }
+    #gitFeed ul li.GistEvent, #gitFeed ul li.GollumEvent, #gitFeed ul li.IssuesEvent {
+      background-image: url("../img/git-alert.png"); }
 #gitFeed button {
   display: block;
   margin: 0 auto;

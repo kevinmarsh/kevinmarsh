@@ -3,12 +3,12 @@ $(document).ready( function() {
     $('nav li').click( function() {
         var $nav = $('nav');
         var clicked = $(this).attr("class");
-        if (!$nav.hasClass('selected')) { // If this is the first time clicked
+        if (!$nav.hasClass('selected')) {           // If this is the first time clicked
             $nav.addClass('selected');
             $('footer').slideDown();
             $(this).addClass('selected');
             $('.contentBody .' + clicked).fadeIn();
-        } else if (!$(this).hasClass('selected')){ // If not already selected
+        } else if (!$(this).hasClass('selected')){  // If not already selected
             selectDiv(clicked, 0);
         }
     });
@@ -22,9 +22,9 @@ $(document).ready( function() {
         } else {
             var selected = $('nav .selected').attr("class").split(' ')[0];
             var keyCode = e.keyCode || e.which;
-            if (keyCode == 39) { // right
+            if (keyCode === 39) {            // Right Key
                 selectDiv(selected, 1);
-            } else if (keyCode == 37) { //left
+            } else if (keyCode === 37) {     // Left Key
                 selectDiv(selected, -1);
             }
         }
@@ -44,9 +44,9 @@ $(document).ready( function() {
     });
     function selectDiv(clicked, dir) {
         var next;
-        if (clicked == 'about' && dir == -1) {
+        if (clicked === 'about' && dir === -1) {
             next = 'contact';
-        } else if (clicked == 'contact' && dir == 1) {
+        } else if (clicked === 'contact' && dir === 1) {
             next = 'about';
         } else {
             var divs = ['about', 'code', 'projects', 'contact'];
@@ -57,27 +57,26 @@ $(document).ready( function() {
         $('.contentBody section').fadeOut().delay(400);
         $('.contentBody .' + next).fadeIn();
     }
-    // TODO: test with live data once I've got internet access
     loadGitFeed();
-    $('#gitFeed li').live('click', function(){
+    $('#gitFeed li[url]').live('click', function(){
         window.open($(this).attr('url'));
     });
 });
 
 function loadGitFeed() {
     $.ajax({
-        dataType: "jsonp",  // TODO: switch back to JSONP after it's cross browser
-        // dataType: "json",
-        url: 'https://api.github.com/users/kevinmarsh/events',
-        // url: 'https://api.github.com/users/django/events',
-        // url: 'kevinmarsh-github-events.json',  // TODO: remove test data
-        // url: 'django-github-events.json',  // TODO: remove test data
-        // url: 'kevinmarsh-github.json',  // TODO: remove test data
+        // dataType: 'jsonp',                   // TODO: Switch back to JSONP when data is live
+        dataType: "json",
+        // url: 'https://api.github.com/users/kevinmarsh/events',
+        // url: 'django-github-events.json',    // TODO: Switch to live data
+        url: 'kevinmarsh-github-events.json',   // TODO: Switch to live data
         success: function(data){
-            printGitEvents(data.data);
+            // printGitEvents(data.data);       // TODO: Switch to this when data is JSONP
+            printGitEvents(data);
         },
         error: function(e) {
-            console.log('error');
+            console.log('Error: Something went wrong.');
+            $('#gitFeed').hide();
         }
     });
 }
@@ -86,27 +85,22 @@ function printGitEvents(data){
     // This takes the JSON data from the AJAX request,
     // formats it and then appends it to the list.
     var count = 0;
-    var gitActionVerbs = {
-        PushEvent: 'Pushed',
-        CreateEvent: 'Created',
-        ForkEvent: 'Forked',
-        IssueCommentEvent: 'Commented on',
-        GollumEvent: '???',
-        MemberEvent: '???'  // TODO: What other events?
-    };
     var $ul = $('#gitFeed ul');
     var feedStart = $('#gitFeed ul li').length;
-    for (var i = feedStart, len = data.length; i < len && i < feedStart + 10; i++) {
+    for (var i = feedStart, len = data.length; i < len && i < feedStart + 9; i++) {
         var gitType = data[i].type;
         if (len < feedStart + 10) {
             $('#gitFeed button').hide();
         }
-        if (gitType == 'PushEvent') {
+        if (gitType === 'PushEvent') {
             $ul = createPushEvents(data[i], $ul);
         } else {
-            var $li = $('<li></li>').addClass(gitType).attr('url', $.trim(data[i]['url']));
+            var $li = $('<li></li>').addClass(gitType);
             var dateTime = new Date(data[i]['created_at']);
-            $('<span>').addClass('ghType').text(gitActionVerbs[gitType]).appendTo($li);
+            if (gitType === 'PullRequestEvent') {
+                $li.attr('url', data[i].payload.pull_request.html_url);
+            }
+            $('<span>').addClass('ghType').text(getGitVerb(gitType)).appendTo($li);
             $('<span>').addClass('ghRepo').text(data[i].repo.name).appendTo($li);
             $('<span>').addClass('ghDate').attr('title', dateTime).text(dateTime.toLocaleDateString() + ' - ' + dateTime.toLocaleTimeString()).appendTo($li);
             $li.appendTo($ul);
@@ -115,16 +109,56 @@ function printGitEvents(data){
 }
 
 function createPushEvents(payload, $ul) {
-    var repoName = payload.repo.name;
     var pushDate = new Date(payload.created_at);
     for (var event in payload.payload.commits) {
         var commit = payload.payload.commits[event];
+        // TODO: Check that this URL is correct or if 'api' needs to be stripped
         var $li = $('<li></li>').addClass('PushEvent').attr('url', commit.url);
         $('<span>').addClass('ghType').text('Pushed').appendTo($li);
-        $('<span>').addClass('ghRepo').text(repoName).appendTo($li);
+        $('<span>').addClass('ghRepo').text(payload.repo.name).appendTo($li);
         $('<span>').addClass('ghDate').attr('title', pushDate.dateTime).text(pushDate.toLocaleDateString() + ' - ' + pushDate.toLocaleTimeString()).appendTo($li);
         $('<span>').addClass('ghMsg').html('&ldquo;' + commit.message + '&rdquo;').appendTo($li);
         $li.appendTo($ul);
     }
     return $ul;
+}
+
+function getGitVerb(event) {
+    switch(event) {
+        case 'CommitCommentEvent':
+        case 'IssueCommentEvent':
+        case 'PullRequestReviewCommentEvent':
+            return 'Commented';
+        case 'CreateEvent':
+            return 'Created';
+        case 'DeleteEvent':
+            return 'Deleted';
+        case 'DownloadEvent':
+            return 'Downloaded';
+        case 'FollowEvent':
+            return 'Followed';
+        case 'ForkEvent':
+        case 'ForkApplyEvent':
+            return 'Forked';
+        case 'GistEvent':
+            return 'Gist';
+        case 'GollumEvent':
+            return 'Gollum';
+        case 'IssuesEvent':
+            return 'Issue';
+        case 'MemberEvent':
+            return 'Member';
+        case 'PublicEvent':
+            return 'Public';
+        case 'PullRequestEvent':
+            return 'Pull';
+        case 'PushEvent':
+            return 'Pushed';
+        case 'TeamAddEvent':
+            return 'Added';
+        case 'WatchEvent':
+            return 'Watched';
+        default:
+            return '';
+    }
 }

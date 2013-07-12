@@ -47,7 +47,7 @@ nav * {
             transition: all 0.3s ease-out;
 }
 
-/* Navigation
+/* NAVIGATION
 ------------------------------------------------------------------------------*/
 nav {
     ul {
@@ -100,7 +100,7 @@ nav {
     }
 }
 
-/* CONTENT Sections
+/* CONTENT SECTIONS
 ------------------------------------------------------------------------------*/
 .contentBody {
     min-width: 200px;
@@ -131,7 +131,12 @@ nav {
             background-color: rgb(255, 255, 255);
             background: rgba(255, 255, 255, 0.6) no-repeat 8px center;
             background-size: 40px 40px;
-            cursor: pointer;
+            cursor: default;
+            font-size: 14px;
+            line-height: 1.4;
+            &[url] {
+                cursor: pointer;
+            }
             &:hover {
                 background-color: rgb(255, 246, 152); /*LightYellow*/
                 background-size: 45px 45px;
@@ -139,14 +144,38 @@ nav {
             &.PushEvent {
                 background-image: url('../img/git-push.png');
             }
-            &.ForkEvent {
+            &.ForkEvent,
+            &.ForkApplyEvent {
                 background-image: url('../img/git-fork.png');
             }
             &.CreateEvent {
                 background-image: url('../img/git-create.png');
             }
-            &.IssueCommentEvent {
+            &.DeleteEvent {
+                background-image: url('../img/git-delete.png');
+            }
+            &.IssueCommentEvent,
+            &.CommitCommentEvent,
+            &.PullRequestReviewCommentEvent {
                 background-image: url('../img/git-comment.png');
+            }
+            &.DownloadEvent,
+            &.PullRequestEvent {
+                background-image: url('../img/git-pull.png');
+            }
+            &.WatchEvent {
+                background-image: url('../img/git-watch.png');
+            }
+            &.FollowEvent,
+            &.MemberEvent,
+            &.PublicEvent,
+            &.TeamAddEvent {
+                background-image: url('../img/git-user.png');
+            }
+            &.GistEvent,
+            &.GollumEvent,
+            &.IssuesEvent {
+                background-image: url('../img/git-alert.png');
             }
         }
     }
