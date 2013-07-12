@@ -55,8 +55,8 @@ $(document).ready( function() {
         $('.contentBody .' + next).fadeIn();
     }
     // TODO: test with live data once I've got internet access
-    // loadGitFeed();
-    $('#gitFeed').hide();
+    loadGitFeed();
+    // $('#gitFeed').hide();
 });
 
 function loadGitFeed() {
@@ -75,6 +75,9 @@ function loadGitFeed() {
 }
 
 function printOutput(data){
+    // This takes the JSON data from the AJAX request,
+    // formats it and then appends it to the list.
+    // TODO: this would make more sense if it was templated
     var count = 0;
     var gitActionVerb = {
         PushEvent: 'Pushed',
@@ -86,36 +89,32 @@ function printOutput(data){
     };
     var $ul = $('#gitFeed ul');
 
-    // TODO: just replace this with a basic counter
-    for (var action in data) {
+    for (var i = 0, len = data.length; i < len && i < 10; i++) {
         var gitAction = {
-            type: data[action]['type'],
+            type: data[i]['type'],
             repoName: '',
-            dateTime: new Date(data[action]['created_at']),
+            dateTime: new Date(data[i]['created_at']),
             commitMsg: '',
-            url: $.trim(data[action]['url'])
+            url: $.trim(data[i]['url'])
         };
-        var $el = $('<li></li>');
-        var msg = '';
+        var $li = $('<li></li>').attr('url', gitAction.url);
 
-        if (count++ == 10) {
-            break;
+        try {
+            gitAction.commitMsg = data[i]['payload']['shas'][0][2];
+        } catch(e) {
+            gitAction.commitMsg = '';
         }
         try {
-            gitAction.commitMsg = data[action]['payload']['shas'][0][2];
+            gitAction.repoName = data[i]['repository']['name'];
         } catch(e) {
-            // Do nothing
-        }
-        try {
-            gitAction.repoName = data[action]['repository']['name'];
-        } catch(e) {
-            gitAction.repoName = data[action]['url'].split('/')[4];
+            gitAction.repoName = data[i]['url'].split('/')[4];
         } finally {
-            msg = [gitActionVerb[gitAction.type], '<strong>', gitAction.repoName, '</strong> at <a href="', gitAction.url, '" title="' + gitAction.dateTime + '">', gitAction.dateTime.toLocaleDateString(), gitAction.dateTime.toLocaleTimeString(), '</a>'];
-            if (gitAction.commitMsg) {
-                msg.push('<br> "' + gitAction.commitMsg + '"');
-            }
-            $el.html(msg.join(' ')).appendTo($ul);
+            // TODO: add a link to URL to entire LI or jQuery
+            $('<span>').addClass('ghType').text(gitActionVerb[gitAction.type]).appendTo($li);
+            $('<span>').addClass('ghRepo').text(gitAction.repoName).appendTo($li);
+            $('<span>').addClass('ghDate').attr('title', gitAction.dateTime).text(gitAction.dateTime.toLocaleDateString() + ' - ' + gitAction.dateTime.toLocaleTimeString()).appendTo($li);
+            $('<span>').addClass('ghMsg').text(gitAction.commitMsg).appendTo($li);
+            $li.appendTo($ul);
         }
     }
 }

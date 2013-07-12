@@ -109,6 +109,48 @@ nav li.selected {
     padding: 12px;
 }
 
+/* GITHUB FEED
+------------------------------------------------------------------------------*/
+/*<li>
+    <span class="ghType">Pushed</span>
+    <span class="ghRepo">pip-requirements-checker</span>
+    <span class="ghDate" title="Thu Jul 11 2013 11:49:33 GMT+0100 (BST)">11/7/2013</span>
+    <span class="ghMsg">fixed latest version bug</span>
+</li>*/
+#gitFeed ul {
+    list-style: none;
+    padding: 0;
+}
+#gitFeed li {
+    padding: 2px 2px 2px 70px;
+    margin: 2px 0;
+    height: 40px;
+    border: 1px solid black;
+    background-color: rgb(255, 255, 255);
+    /* TODO: Add in the url for each background image type*/
+    background: rgba(255, 255, 255, 0.8) url() no-repeat left center;
+    cursor: pointer;
+}
+#gitFeed li:hover {
+    background-color: rgba(255, 255, 255, 1)
+}
+.ghType {
+    display: inline-block;
+    width: 90px;
+}
+.ghDate {
+    float: right;
+}
+.ghMsg {
+    display: block;
+}
+.ghMsg:before,
+.ghMsg:after {
+    /*TODO: replace with smart quotes, also what if there is no msg? maybe move to JS*/
+    content: '"';
+}
+
+
 /* FOOTER
 ------------------------------------------------------------------------------*/
 footer {
