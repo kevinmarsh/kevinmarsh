@@ -1,6 +1,6 @@
-/*  July, 2013
-    Kevin Marsh */
+/* Kevin Marsh - July, 2013 */
 /*LightGrey*/
+/*MediumGrey*/
 /*DarkGrey*/
 body {
   margin: 0;
@@ -112,28 +112,41 @@ nav.selected span {
 
 /* GITHUB FEED
 ------------------------------------------------------------------------------*/
-/*<li>
-    <span class="ghType">Pushed</span>
-    <span class="ghRepo">pip-requirements-checker</span>
-    <span class="ghDate" title="Thu Jul 11 2013 11:49:33 GMT+0100 (BST)">11/7/2013</span>
-    <span class="ghMsg">fixed latest version bug</span>
-</li>*/
 #gitFeed ul {
   list-style: none;
   padding: 0; }
   #gitFeed ul li {
-    height: 40px;
-    padding: 2px 2px 2px 70px;
+    min-height: 40px;
+    padding: 2px 2px 2px 64px;
     margin: 2px 0;
     border: 1px solid #222222;
+    border-radius: 2px;
     background-color: white;
-    /* TODO: Add in the url for each background image type*/
-    background: rgba(255, 255, 255, 0.6) url("../img/test.png") no-repeat 8px center;
+    background: rgba(255, 255, 255, 0.6) no-repeat 8px center;
     background-size: 40px 40px;
     cursor: pointer; }
     #gitFeed ul li:hover {
       background-color: #fff698;
-      /*LightYellow*/ }
+      /*LightYellow*/
+      background-size: 45px 45px; }
+    #gitFeed ul li.PushEvent {
+      background-image: url("../img/git-push.png"); }
+    #gitFeed ul li.ForkEvent {
+      background-image: url("../img/git-fork.png"); }
+    #gitFeed ul li.CreateEvent {
+      background-image: url("../img/git-create.png"); }
+    #gitFeed ul li.IssueCommentEvent {
+      background-image: url("../img/git-comment.png"); }
+#gitFeed button {
+  display: block;
+  margin: 0 auto;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border-color: lightgrey;
+  background: #222222;
+  color: #f0f0f0;
+  font-weight: bold;
+  cursor: pointer; }
 
 .ghType {
   display: inline-block;
@@ -147,9 +160,6 @@ nav.selected span {
 
 .ghMsg {
   display: block; }
-  .ghMsg:before, .ghMsg:after {
-    /*TODO: replace with smart quotes, also what if there is no msg? maybe move to JS*/
-    content: '"'; }
 
 /* FOOTER
 ------------------------------------------------------------------------------*/

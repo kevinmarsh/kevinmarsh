@@ -8,12 +8,12 @@ $(document).ready( function() {
             $('footer').slideDown();
             $(this).addClass('selected');
             $('.contentBody .' + clicked).fadeIn();
-        }
-        else if (!$(this).hasClass('selected')){ // If not already selected
+        } else if (!$(this).hasClass('selected')){ // If not already selected
             selectDiv(clicked, 0);
         }
     });
     $(document).keydown(function (e) {
+        // TODO: Add swipe functionality on smart phones
         var $nav = $('nav');
         if (!$nav.hasClass('selected')) {
             $nav.addClass('selected');
@@ -39,6 +39,9 @@ $(document).ready( function() {
         $('nav .contact').addClass('selected');
         $('.contentBody .iconAttributes').fadeIn();
     });
+    $('#gitFeed button').click(function() {
+        loadGitFeed();
+    });
     function selectDiv(clicked, dir) {
         var next;
         if (clicked == 'about' && dir == -1) {
@@ -56,17 +59,22 @@ $(document).ready( function() {
     }
     // TODO: test with live data once I've got internet access
     loadGitFeed();
-    // $('#gitFeed').hide();
+    $('#gitFeed li').live('click', function(){
+        window.open($(this).attr('url'));
+    });
 });
 
 function loadGitFeed() {
     $.ajax({
-        // dataType: "jsonp",  // TODO: switch back to JSONP after it's cross browser
-        dataType: "json",
-        // url: 'https://github.com/kevinmarsh.json',
-        url: 'kevinmarsh-github.json',  // TODO: remove test data
+        dataType: "jsonp",  // TODO: switch back to JSONP after it's cross browser
+        // dataType: "json",
+        url: 'https://api.github.com/users/kevinmarsh/events',
+        // url: 'https://api.github.com/users/django/events',
+        // url: 'kevinmarsh-github-events.json',  // TODO: remove test data
+        // url: 'django-github-events.json',  // TODO: remove test data
+        // url: 'kevinmarsh-github.json',  // TODO: remove test data
         success: function(data){
-            printOutput(data);
+            printGitEvents(data.data);
         },
         error: function(e) {
             console.log('error');
@@ -74,12 +82,11 @@ function loadGitFeed() {
     });
 }
 
-function printOutput(data){
+function printGitEvents(data){
     // This takes the JSON data from the AJAX request,
     // formats it and then appends it to the list.
-    // TODO: this would make more sense if it was templated
     var count = 0;
-    var gitActionVerb = {
+    var gitActionVerbs = {
         PushEvent: 'Pushed',
         CreateEvent: 'Created',
         ForkEvent: 'Forked',
@@ -88,33 +95,36 @@ function printOutput(data){
         MemberEvent: '???'  // TODO: What other events?
     };
     var $ul = $('#gitFeed ul');
-
-    for (var i = 0, len = data.length; i < len && i < 10; i++) {
-        var gitAction = {
-            type: data[i]['type'],
-            repoName: '',
-            dateTime: new Date(data[i]['created_at']),
-            commitMsg: '',
-            url: $.trim(data[i]['url'])
-        };
-        var $li = $('<li></li>').attr('url', gitAction.url);
-
-        try {
-            gitAction.commitMsg = data[i]['payload']['shas'][0][2];
-        } catch(e) {
-            gitAction.commitMsg = '';
+    var feedStart = $('#gitFeed ul li').length;
+    for (var i = feedStart, len = data.length; i < len && i < feedStart + 10; i++) {
+        var gitType = data[i].type;
+        if (len < feedStart + 10) {
+            $('#gitFeed button').hide();
         }
-        try {
-            gitAction.repoName = data[i]['repository']['name'];
-        } catch(e) {
-            gitAction.repoName = data[i]['url'].split('/')[4];
-        } finally {
-            // TODO: add a link to URL to entire LI or jQuery
-            $('<span>').addClass('ghType').text(gitActionVerb[gitAction.type]).appendTo($li);
-            $('<span>').addClass('ghRepo').text(gitAction.repoName).appendTo($li);
-            $('<span>').addClass('ghDate').attr('title', gitAction.dateTime).text(gitAction.dateTime.toLocaleDateString() + ' - ' + gitAction.dateTime.toLocaleTimeString()).appendTo($li);
-            $('<span>').addClass('ghMsg').text(gitAction.commitMsg).appendTo($li);
+        if (gitType == 'PushEvent') {
+            $ul = createPushEvents(data[i], $ul);
+        } else {
+            var $li = $('<li></li>').addClass(gitType).attr('url', $.trim(data[i]['url']));
+            var dateTime = new Date(data[i]['created_at']);
+            $('<span>').addClass('ghType').text(gitActionVerbs[gitType]).appendTo($li);
+            $('<span>').addClass('ghRepo').text(data[i].repo.name).appendTo($li);
+            $('<span>').addClass('ghDate').attr('title', dateTime).text(dateTime.toLocaleDateString() + ' - ' + dateTime.toLocaleTimeString()).appendTo($li);
             $li.appendTo($ul);
         }
     }
+}
+
+function createPushEvents(payload, $ul) {
+    var repoName = payload.repo.name;
+    var pushDate = new Date(payload.created_at);
+    for (var event in payload.payload.commits) {
+        var commit = payload.payload.commits[event];
+        var $li = $('<li></li>').addClass('PushEvent').attr('url', commit.url);
+        $('<span>').addClass('ghType').text('Pushed').appendTo($li);
+        $('<span>').addClass('ghRepo').text(repoName).appendTo($li);
+        $('<span>').addClass('ghDate').attr('title', pushDate.dateTime).text(pushDate.toLocaleDateString() + ' - ' + pushDate.toLocaleTimeString()).appendTo($li);
+        $('<span>').addClass('ghMsg').html('&ldquo;' + commit.message + '&rdquo;').appendTo($li);
+        $li.appendTo($ul);
+    }
+    return $ul;
 }

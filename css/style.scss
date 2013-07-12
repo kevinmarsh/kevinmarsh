@@ -1,7 +1,6 @@
-/*  July, 2013
-    Kevin Marsh */
-
+/* Kevin Marsh - July, 2013 */
 $color-bg: rgb(211, 211, 211); /*LightGrey*/
+$color-content: rgb(240, 240, 240); /*MediumGrey*/
 $color-text: rgb(34, 34, 34); /*DarkGrey*/
 body {
     margin: 0;
@@ -107,7 +106,7 @@ nav {
     min-width: 200px;
     max-width: 600px;
     margin: 20px auto 30px;
-    background: rgb(240, 240, 240);
+    background: $color-content;
     border-radius: 4px;
     h2 {
         font-family: 'Lobster', Georgia, Times, serif;
@@ -119,28 +118,48 @@ nav {
 
 /* GITHUB FEED
 ------------------------------------------------------------------------------*/
-/*<li>
-    <span class="ghType">Pushed</span>
-    <span class="ghRepo">pip-requirements-checker</span>
-    <span class="ghDate" title="Thu Jul 11 2013 11:49:33 GMT+0100 (BST)">11/7/2013</span>
-    <span class="ghMsg">fixed latest version bug</span>
-</li>*/
-#gitFeed ul {
-    list-style: none;
-    padding: 0;
-    li {
-        height: 40px;
-        padding: 2px 2px 2px 70px;
-        margin: 2px 0;
-        border: 1px solid $color-text;
-        background-color: rgb(255, 255, 255);
-        /* TODO: Add in the url for each background image type*/
-        background: rgba(255, 255, 255, 0.6) url('../img/test.png') no-repeat 8px center;
-        background-size: 40px 40px;
-        cursor: pointer;
-        &:hover {
-            background-color: rgb(255, 246, 152); /*LightYellow*/
+#gitFeed {
+    ul {
+        list-style: none;
+        padding: 0;
+        li {
+            min-height: 40px;
+            padding: 2px 2px 2px 64px;
+            margin: 2px 0;
+            border: 1px solid $color-text;
+            border-radius: 2px;
+            background-color: rgb(255, 255, 255);
+            background: rgba(255, 255, 255, 0.6) no-repeat 8px center;
+            background-size: 40px 40px;
+            cursor: pointer;
+            &:hover {
+                background-color: rgb(255, 246, 152); /*LightYellow*/
+                background-size: 45px 45px;
+            }
+            &.PushEvent {
+                background-image: url('../img/git-push.png');
+            }
+            &.ForkEvent {
+                background-image: url('../img/git-fork.png');
+            }
+            &.CreateEvent {
+                background-image: url('../img/git-create.png');
+            }
+            &.IssueCommentEvent {
+                background-image: url('../img/git-comment.png');
+            }
         }
+    }
+    button {
+        display: block;
+        margin: 0 auto;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border-color: $color-bg;
+        background: $color-text;
+        color: $color-content;
+        font-weight: bold;
+        cursor: pointer;
     }
 }
 .ghType {
@@ -152,11 +171,6 @@ nav {
 }
 .ghMsg {
     display: block;
-    &:before,
-    &:after {
-        /*TODO: replace with smart quotes, also what if there is no msg? maybe move to JS*/
-        content: '"';
-    }
 }
 
 
