@@ -46,6 +46,9 @@ $(document).ready( function() {
     $('#gitFeed button').click(function() {
         loadGitFeed();
     });
+    $('#allGit').click(function() {
+        window.open('https://github.com/kevinmarsh?tab=activity');
+    });
     function selectDiv(clicked, dir) {
         var next;
         if (clicked === 'about' && dir === -1) {
@@ -63,20 +66,17 @@ $(document).ready( function() {
     }
     loadGitFeed();
     $('#gitFeed li[url]').live('click', function(){
-        window.open($(this).attr('url'));
+        // Change the url from API to public facing
+        window.open($(this).attr('url').replace('api.github.com/repos', 'github.com'). replace('commits', 'commit'));
     });
 });
 
 function loadGitFeed() {
     $.ajax({
-        // dataType: 'jsonp',                   // TODO: Switch back to JSONP when data is live
-        dataType: "json",
-        // url: 'https://api.github.com/users/kevinmarsh/events',
-        // url: 'django-github-events.json',    // TODO: Switch to live data
-        url: 'kevinmarsh-github-events.json',   // TODO: Switch to live data
+        dataType: 'jsonp',
+        url: 'https://api.github.com/users/kevinmarsh/events',
         success: function(data){
-            // printGitEvents(data.data);       // TODO: Switch to this when data is JSONP
-            printGitEvents(data);
+            printGitEvents(data.data);
         },
         error: function(e) {
             console.log('Error: Something went wrong.');
