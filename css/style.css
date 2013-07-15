@@ -161,6 +161,8 @@ nav.selected span {
   color: #f0f0f0;
   font-weight: bold;
   cursor: pointer; }
+  #gitFeed button#allGit {
+    display: none; }
 
 .ghType {
   display: inline-block;

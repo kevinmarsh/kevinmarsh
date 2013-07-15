@@ -189,6 +189,9 @@ nav {
         color: $color-content;
         font-weight: bold;
         cursor: pointer;
+        &#allGit {
+            display: none;
+        }
     }
 }
 .ghType {

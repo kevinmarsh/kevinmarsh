@@ -1,3 +1,7 @@
+// Global gitEventCount is needed due to multiple commits coming through on
+// the same push event.
+var gitEventCount = 0;
+
 $(document).ready( function() {
     $('.contentBody section').hide();
     $('nav li').click( function() {
@@ -84,24 +88,23 @@ function loadGitFeed() {
 function printGitEvents(data){
     // This takes the JSON data from the AJAX request,
     // formats it and then appends it to the list.
-    var count = 0;
     var $ul = $('#gitFeed ul');
-    var feedStart = $('#gitFeed ul li').length;
-    for (var i = feedStart, len = data.length; i < len && i < feedStart + 9; i++) {
-        var gitType = data[i].type;
-        if (len < feedStart + 10) {
-            $('#gitFeed button').hide();
+    for (var i = 0, len = data.length; i < len && i < 10; i++, gitEventCount++) {
+        var gitType = data[gitEventCount].type;
+        if (len < gitEventCount + 10) {
+            $('#gitFeed button').toggle();
+            $('#allGit').css('display', 'block');
         }
         if (gitType === 'PushEvent') {
-            $ul = createPushEvents(data[i], $ul);
+            $ul = createPushEvents(data[gitEventCount], $ul);
         } else {
-            var $li = $('<li></li>').addClass(gitType);
-            var dateTime = new Date(data[i]['created_at']);
+            var $li = $('<li></li>').addClass(gitType).attr('gitid', data[i].id);
+            var dateTime = new Date(data[gitEventCount]['created_at']);
             if (gitType === 'PullRequestEvent') {
-                $li.attr('url', data[i].payload.pull_request.html_url);
+                $li.attr('url', data[gitEventCount].payload.pull_request.html_url);
             }
             $('<span>').addClass('ghType').text(getGitVerb(gitType)).appendTo($li);
-            $('<span>').addClass('ghRepo').text(data[i].repo.name).appendTo($li);
+            $('<span>').addClass('ghRepo').text(data[gitEventCount].repo.name).appendTo($li);
             $('<span>').addClass('ghDate').attr('title', dateTime).text(dateTime.toLocaleDateString() + ' - ' + dateTime.toLocaleTimeString()).appendTo($li);
             $li.appendTo($ul);
         }
@@ -110,8 +113,9 @@ function printGitEvents(data){
 
 function createPushEvents(payload, $ul) {
     var pushDate = new Date(payload.created_at);
-    for (var event in payload.payload.commits) {
-        var commit = payload.payload.commits[event];
+    for (var i = payload.payload.commits.length - 1; i >= 0; i--) {
+        // This needs to count down so that multiple pushes appear in the correct order
+        var commit = payload.payload.commits[i];
         // TODO: Check that this URL is correct or if 'api' needs to be stripped
         var $li = $('<li></li>').addClass('PushEvent').attr('url', commit.url);
         $('<span>').addClass('ghType').text('Pushed').appendTo($li);
