@@ -1,10 +1,30 @@
 /* Kevin Marsh - July, 2013 */
-$color-bg: rgb(211, 211, 211); /*LightGrey*/
-$color-content: rgb(240, 240, 240); /*MediumGrey*/
-$color-text: rgb(34, 34, 34); /*DarkGrey*/
-body {
+$color-bg: rgb(211, 211, 211); // LightGrey
+$color-content: lighten($color-bg, 10%); // MediumGrey
+$color-text: darken($color-bg, 70%); // DarkGrey
+
+%clearFix:before {
+    content: '';
+    display: table;
+    clear: both;
+}
+%noSpace {
     margin: 0;
     padding: 0;
+}
+%displayInline { // Hack for IE
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    }
+@mixin opacity($trans) {
+    filter: alpha(opacity=($trans * 100)); // IE 5-7
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($trans * 100) + ")"; // IE 8
+    -moz-opacity: $trans;
+    opacity: 1;
+}
+body {
+    @extend %noSpace;
     background-color: $color-bg;
     color: $color-text;
     font-family: 'Cabin', Helvetica, Arial, sans-serif;
@@ -13,7 +33,7 @@ header {
     margin: 20px 0;
     padding: 40px 0;
     text-align: center;
-    color: rgb(220, 220, 220);
+    color: $color-bg;
     background: $color-text url('../img/micro_carbon.png') repeat top left;
     h1 {
         margin: 30px 0;
@@ -40,10 +60,10 @@ img {
 }
 .contentBody *,
 nav * {
-    -webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
-       -moz-transition: all 0.3s ease-out;  /* FF4+ */
-        -ms-transition: all 0.3s ease-out;  /* IE10 */
-         -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
+    -webkit-transition: all 0.3s ease-out;  // Saf3.2+, Chrome
+       -moz-transition: all 0.3s ease-out;  // FF4+
+        -ms-transition: all 0.3s ease-out;  // IE10
+         -o-transition: all 0.3s ease-out;  // Opera 10.5+
             transition: all 0.3s ease-out;
 }
 
@@ -51,32 +71,25 @@ nav * {
 ------------------------------------------------------------------------------*/
 nav {
     ul {
-        margin: 0;
-        padding: 0;
+        @extend %noSpace;
         text-align: center;
     }
     li {
-        display: inline-block; *display: inline; zoom: 1; /*Hack for IE*/
+        @extend %displayInline;
+        @include opacity(0.5);
         height: 100px;
         max-width: 100px;
         margin: 0 12px;
         padding: 6px;
         border-radius: 4px;
-        opacity: 0.5;
         color: $color-text;
         cursor: pointer;
-        filter: alpha(opacity=50); /* IE 5-7 */
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; /* IE 8 */
         font-family: 'Lobster', Georgia, Times, serif;
         &.selected {
-            opacity: 1;
-            filter: alpha(opacity=100); /* IE 5-7 */
-            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; /* IE 8 */
+            @include opacity(1);
         }
         &:hover {
-            opacity: 0.8;
-            filter: alpha(opacity=80); /* IE 5-7 */
-            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"; /* IE 8 */
+            @include opacity(0.8);
         }
         img {
             height: 50px;
@@ -195,13 +208,14 @@ nav {
     }
 }
 .ghType {
-    display: inline-block; *display: inline; zoom: 1; /*Hack for IE*/
+    @extend %displayInline;
     width: 90px;
 }
 .ghDate {
     float: right;
 }
 .ghMsg {
+    @extend %clearFix;
     display: block;
 }
 
@@ -213,16 +227,12 @@ footer {
     bottom: 3px;
     margin-top: 3px;
     width: 100%;
-    opacity: 0.4;
-    filter: alpha(opacity=40); /* IE 5-7 */
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; /* IE 8 */
+    @include opacity(0.4);
     text-align: center;
     font-size: 8pt;
     z-index: -10;
     &:hover {
-        opacity: 0.8;
-        filter: alpha(opacity=80); /* IE 5-7 */
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)"; /* IE 8 */
+        @include opacity(0.8);
     }
     a,
     a:visited {
