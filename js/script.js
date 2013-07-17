@@ -4,12 +4,33 @@ var gitEventCount = 0;
 
 $(document).ready( function() {
     $('.contentBody section').hide();
+
+    // History State Change
+    if (window.location.pathname.split('/')[2] !== '') {
+        // Page is being loaded directly from URL with section already selected
+        var path = window.location.pathname.split('/')[2];
+        document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
+        $('nav, li.' + path).addClass('selected');
+        $('.contentBody .' + path).fadeIn();
+    }
+    window.onpopstate = function(event) {
+        var path = window.location.pathname.split('/')[2];
+        if (path !== $('nav .selected').attr("class").split(' ')[0]) {
+            document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
+            $('nav li.selected').removeClass('selected');
+            $('nav .' + path).addClass('selected');
+            $('.contentBody section').fadeOut().delay(400);
+            $('.contentBody .' + path).fadeIn();
+        }
+    };
+
+    // Navigation
     $('nav li').click( function() {
         var $nav = $('nav');
         var clicked = $(this).attr("class");
         if (!$nav.hasClass('selected')) {           // If this is the first time clicked
+            updateHistory(clicked);
             $nav.addClass('selected');
-            $('footer').slideDown();
             $(this).addClass('selected');
             $('.contentBody .' + clicked).fadeIn();
         } else if (!$(this).hasClass('selected')){  // If not already selected
@@ -21,7 +42,6 @@ $(document).ready( function() {
         var $nav = $('nav');
         if (!$nav.hasClass('selected')) {
             $nav.addClass('selected');
-            $('footer').slideDown();
             selectDiv('about', 0);
         } else {
             var selected = $('nav .selected').attr("class").split(' ')[0];
@@ -33,22 +53,30 @@ $(document).ready( function() {
             }
         }
     });
+
+    // Spans that act as internal links
+    // TODO: just change these to anchors once .htaccess is updated
     $('.contentBody section span.link').click(function (){
         var link = $(this).attr('class').split(' ')[1];
         selectDiv(link, 0);
     });
+
+    // Links to the Icon popup
+    // TODO: just change this to anchors once .htaccess is updated
     $('span.icon span').click(function () {
         $('nav li.selected').removeClass('selected');
         $('.contentBody section').fadeOut().delay(400);
         $('nav .contact').addClass('selected');
         $('.contentBody .iconAttributes').fadeIn();
     });
+
     $('#gitFeed button').click(function() {
         loadGitFeed();
     });
     $('#allGit').click(function() {
         window.open('https://github.com/kevinmarsh?tab=activity');
     });
+
     function selectDiv(clicked, dir) {
         var next;
         if (clicked === 'about' && dir === -1) {
@@ -59,6 +87,7 @@ $(document).ready( function() {
             var divs = ['about', 'code', 'projects', 'contact'];
             next = divs[$.inArray(clicked, divs) + dir];
         }
+        updateHistory(next);
         $('nav li.selected').removeClass('selected');
         $('nav .' + next).addClass('selected');
         $('.contentBody section').fadeOut().delay(400);
@@ -70,6 +99,16 @@ $(document).ready( function() {
         window.open($(this).attr('url').replace('api.github.com/repos', 'github.com'). replace('commits', 'commit'));
     });
 });
+
+function updateHistory(path) {
+    // Updates the page title, adds the page to history and changes url
+    document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
+    if (typeof(window.history.pushState) == 'function') {
+        window.history.pushState(null, path, path);
+    } else {
+        window.location.hash = '#!' + path;
+    }
+}
 
 function loadGitFeed() {
     $.ajax({
@@ -116,7 +155,6 @@ function createPushEvents(payload, $ul) {
     for (var i = payload.payload.commits.length - 1; i >= 0; i--) {
         // This needs to count down so that multiple pushes appear in the correct order
         var commit = payload.payload.commits[i];
-        // TODO: Check that this URL is correct or if 'api' needs to be stripped
         var $li = $('<li></li>').addClass('PushEvent').attr('url', commit.url);
         $('<span>').addClass('ghType').text('Pushed').appendTo($li);
         $('<span>').addClass('ghRepo').text(payload.repo.name).appendTo($li);
