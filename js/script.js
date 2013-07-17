@@ -6,16 +6,16 @@ $(document).ready( function() {
     $('.contentBody section').hide();
 
     // History State Change
-    if (window.location.pathname.split('/')[2] !== '') {
+    if (window.location.pathname !== '/' && window.location.pathname.split('/')[1] !== '') {
         // Page is being loaded directly from URL with section already selected
-        var path = window.location.pathname.split('/')[2];
+        var path = window.location.pathname.split('/')[1];
         document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
         $('nav, li.' + path).addClass('selected');
         $('.contentBody .' + path).fadeIn();
     }
     window.onpopstate = function(event) {
-        var path = window.location.pathname.split('/')[2];
-        if (path !== $('nav .selected').attr("class").split(' ')[0]) {
+        var path = window.location.pathname.split('/')[1];
+        if ($('nav .selected').length && path !== $('nav .selected').attr("class").split(' ')[0]) {
             document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
             $('nav li.selected').removeClass('selected');
             $('nav .' + path).addClass('selected');
