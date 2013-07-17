@@ -3,45 +3,51 @@
 var gitEventCount = 0;
 
 $(document).ready( function() {
+    // Allows for non-JS browsers to show all content
     $('.contentBody section').hide();
 
     // History State Change
-    if (window.location.pathname !== '/' && window.location.pathname.split('/')[1] !== '') {
+    var path = window.location.pathname.split('/').pop();
+    if (path !== '') {
         // Page is being loaded directly from URL with section already selected
-        var path = window.location.pathname.split('/')[1];
         document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
         $('nav, li.' + path).addClass('selected');
         $('.contentBody .' + path).fadeIn();
     }
     window.onpopstate = function(event) {
-        var path = window.location.pathname.split('/')[1];
-        if ($('nav .selected').length && path !== $('nav .selected').attr("class").split(' ')[0]) {
+        var path = window.location.pathname.split('/').pop();
+        if (path) {
             document.title = 'Kevin Marsh - Web Developer - ' + path.charAt(0).toUpperCase() + path.slice(1);
             $('nav li.selected').removeClass('selected');
             $('nav .' + path).addClass('selected');
             $('.contentBody section').fadeOut().delay(400);
             $('.contentBody .' + path).fadeIn();
+            if (!isInitialized()) {
+                $('nav').addClass('selected');
+            }
+        } else {
+            resetPage();
         }
     };
 
-    // Navigation
+    // Click Navigation
     $('nav li').click( function() {
-        var $nav = $('nav');
         var clicked = $(this).attr("class");
-        if (!$nav.hasClass('selected')) {           // If this is the first time clicked
+        if (!isInitialized()) {
+            // If this is the first time clicked
             updateHistory(clicked);
-            $nav.addClass('selected');
-            $(this).addClass('selected');
+            $(this, 'nav').addClass('selected');
             $('.contentBody .' + clicked).fadeIn();
-        } else if (!$(this).hasClass('selected')){  // If not already selected
+        } else if (!$(this).hasClass('selected')){
+            // If not already selected
             selectDiv(clicked, 0);
         }
     });
+    // Keypress Navigation
     $(document).keydown(function (e) {
         // TODO: Add swipe functionality on smart phones
-        var $nav = $('nav');
-        if (!$nav.hasClass('selected')) {
-            $nav.addClass('selected');
+        if (!isInitialized()) {
+            $('nav').addClass('selected');
             selectDiv('about', 0);
         } else {
             var selected = $('nav .selected').attr("class").split(' ')[0];
@@ -64,10 +70,11 @@ $(document).ready( function() {
     // Links to the Icon popup
     // TODO: just change this to anchors once .htaccess is updated
     $('span.icon span').click(function () {
+        updateHistory('icons');
         $('nav li.selected').removeClass('selected');
-        $('.contentBody section').fadeOut().delay(400);
         $('nav .contact').addClass('selected');
-        $('.contentBody .iconAttributes').fadeIn();
+        $('.contentBody section').fadeOut().delay(400);
+        $('.contentBody .icons').fadeIn();
     });
 
     $('#gitFeed button').click(function() {
@@ -95,10 +102,20 @@ $(document).ready( function() {
     }
     loadGitFeed();
     $('#gitFeed li[url]').live('click', function(){
-        // Change the url from API to public facing
+        // Changes the url from API to public facing
         window.open($(this).attr('url').replace('api.github.com/repos', 'github.com'). replace('commits', 'commit'));
     });
 });
+
+function isInitialized() {
+    // Returns true if a content section is loaded
+    return $('nav').hasClass('selected');
+}
+function resetPage () {
+    $('nav, nav li').removeClass('selected');
+    $('.contentBody section').fadeOut().delay(400);
+    document.title = 'Kevin Marsh - Web Developer';
+}
 
 function updateHistory(path) {
     // Updates the page title, adds the page to history and changes url
