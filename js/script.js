@@ -79,7 +79,7 @@ $(document).ready(function() {
     });
 
     loadGitFeed();
-    $('#gitFeed li[url]').live('click', function() {
+    $('#gitFeed').on('click', 'li[url]', function() {
         // Changes the url from API to public facing
         window.open($(this).attr('url').replace('api.github.com/repos', 'github.com').replace('commits', 'commit'));
     });
@@ -199,6 +199,7 @@ function getGitVerb(event) {
         case 'PullRequestReviewCommentEvent':
             return 'Commented';
         case 'CreateEvent':
+            // Split this into created Repo and Branch
             return 'Created';
         case 'DeleteEvent':
             return 'Deleted';
