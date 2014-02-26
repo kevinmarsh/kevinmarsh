@@ -1,8 +1,25 @@
 // Global gitEventCount is needed due to multiple commits coming through on
 // the same push event.
-var gitEventCount = 0;
+// var gitEventCount = 0;
 
 $(document).ready(function() {
+
+    // Scroll to the section when sidebar link is clicked
+    $('nav li').on('click', function() {
+        var $el = $('#' + $(this).attr('id').slice(3));
+        if ($(this).hasClass('selected')) {
+            return false;
+        }
+        $('li.selected').removeClass('selected');
+        $(this).addClass('selected');
+        $('html, body').animate({
+            scrollTop: $el.offset().top - parseInt($el.css("marginTop"), 10)
+        }, 200);
+    });
+
+    // Just leave the js out until have a chance to clean fadeOut
+    return false
+
     // Allows for non-JS browsers to show all content
     $('.contentBody section').hide();
 
