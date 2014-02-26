@@ -16,7 +16,7 @@ $color-text: darken($color-bg, 70%); // DarkGrey
     display: inline-block;
     *display: inline;
     zoom: 1;
-    }
+}
 @mixin opacity($trans) {
     filter: alpha(opacity=($trans * 100)); // IE 5-7
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($trans * 100) + ")"; // IE 8
