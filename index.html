@@ -10,27 +10,30 @@
     <meta name="keywords" content="web developer, Python, Django, HTML, CSS, Javascript, jQuery">
     <meta name="author" content="Kevin Marsh">
     <link rel="icon" type="image/png" href="img/favicon.png" />
-    <!--[if lt IE 9]><script type="text/javascript" src="js/html5shiv.js"></script><![endif]-->
-    <link rel="stylesheet" href="css/style.css">
+    <!--[if lt IE 9]><script type="text/javascript" src="js/lib/html5shiv.min.js"></script><![endif]-->
+    <link rel="stylesheet" href="css/style.min.css">
     <link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <header>
-        <h1>Kevin Marsh</h1>
-        <p>Front-end web developer</p>
-    </header>
+<div class="bodywrapper">
+    <section class="left">
+        <header>
+            <h1>Kevin Marsh</h1>
+            <p>Front-end web developer</p>
+        </header>
 
-    <nav>
-        <ul>
-            <li class="about" title="About"><img src="img/about.svg" alt="About" /><br><span>About</span></li>
-            <li class="code" title="Code"><img src="img/code.svg" alt="Code" /><br><span>Coding</span></li>
-            <li class="projects" title="Projects"><img src="img/projects.svg" alt="Projects" /><br><span>Projects</span></li>
-            <li class="contact" title="Contact"><img src="img/contact.svg" alt="Contact" /><br><span>Contact</span></li>
-        </ul>
-    </nav>
+        <nav>
+            <ul>
+                <li class="about" title="About"><img src="img/about.svg" alt="About" /><br><span>About</span></li>
+                <li class="code" title="Code"><img src="img/code.svg" alt="Code" /><br><span>Coding</span></li>
+                <li class="projects" title="Projects"><img src="img/projects.svg" alt="Projects" /><br><span>Projects</span></li>
+                <li class="contact" title="Contact"><img src="img/contact.svg" alt="Contact" /><br><span>Contact</span></li>
+            </ul>
+        </nav>
+    </section><!-- .left -->
 
-    <div class="contentBody">
+    <section class="right">
         <section class="about">
             <h2>About Me</h2>
             <p>I'm a web developer making the transition from front-end to more back-end development in particular Python and Django. I'm a former <abbr title="Vancouver, Canada">Vancouverite</abbr> living in the UK figuring out what's next in life.</p>
@@ -49,6 +52,7 @@
                 <li>Test server setup and maintenance (Nginx and Apache)</li>
             </ul>
         </section> <!-- .about -->
+
         <section class="code">
             <h2>Coding</h2>
             <p>I've worked on the front end of web projects in HTML, CSS, JavaScript and jQuery and on the backend with Django, PostgreSQL along with some experience in Drupal, Wordpress and PHP. All design done in Adobe Creative Suite (Fireworks, Photoshop, InDesign), but I've been trying to migrate to more <em>open</em> software.</p>
@@ -60,6 +64,7 @@
                 <button id="allGit">See it all on GitHub &hellip;</button>
             </div>
         </section> <!-- .code -->
+
         <section class="projects">
             <h2>Web Projects</h2>
             <ul>
@@ -70,10 +75,12 @@
                 <li><a href="http://www.thedynamicwaiter.co.uk/">The Dynamic Waiter</a> was built for a startup using a mixture of HTML, CSS, jQuery, AJAX, PHP and self hosted Wordpress for their blog. *Update* This site has now been completely moved over to Wordpress by the owner.</li>
             </ul>
         </section> <!-- .projects -->
+
         <section class="contact">
             <h2>Contact Me</h2>
             <p>If need to get in touch or wish to collaborate, <a href="http://www.google.com/recaptcha/mailhide/d?k=01Il8t58lSTBT_dr1XVjV78g==&amp;c=Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501Il8t58lSTBT_dr1XVjV78g\75\75\46c\75Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address"> click to reveal my email address</a> or message me on <a href="https://github.com/kevinmarsh">GitHub</a>.</p>
         </section> <!-- .contact -->
+
         <section class="icons">
             <ul>
                 <li><img src="img/about.svg" alt="About" /><a href="http://thenounproject.com/noun/user/#icon-No6150" target="_blank"><em>User</em></a> designed by <a href="http://thenounproject.com/tlb" target="_blank">Thomas Le Bas</a> from The Noun Project</li>
@@ -82,27 +89,26 @@
                 <li><img src="img/contact.svg" alt="Contact" /><a href="http://thenounproject.com/noun/mail/#icon-No6101" target="_blank"><em>Mail</em></a> designed by <a href="http://thenounproject.com/tlb" target="_blank">Thomas Le Bas</a> from The Noun Project</li>
             </ul>
         </section> <!-- .icons -->
-    </div>
+    </section>
 
     <footer>
         Use the arrow keys to navigate <span class="bold">&larr;&rarr;</span>
          //
         <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/" title="Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License">
-            <span id="year">2013</span>
+            <span id="year">2014</span>
             <img src="img/cc.png" />
         </a>
          //
         <span class="icon"><span>Icons from The Noun Project</span></span>
     </footer>
 
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript">window.jQuery || document.write('<script src="js/jquery-1.8.2.min.js">\x3C/script>')</script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="js/lib/jquery-1.11.0.min.js">\x3C/script>')</script>
     <!--[if lt IE 9]><script type="text/javascript">
         // This switches the SVG images to PNG
         $('nav img').each(function() { $(this).attr('src', $(this).attr('src').replace(/svg/, 'png')) });
         $('footer span.icon').html('Icons from <a href="http://pc.de/icons/#Dusseldorf" target="_blank">pc.de/icons</a>')
     </script><![endif]-->
-    <script type="text/javascript" src="js/history.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -114,5 +120,6 @@
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
     </script>
+</div>
 </body>
 </html>
