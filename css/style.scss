@@ -1,7 +1,22 @@
-/* Kevin Marsh - July, 2013 */
-$color-bg: rgb(211, 211, 211); // LightGrey
-$color-content: lighten($color-bg, 10%); // MediumGrey
-$color-text: darken($color-bg, 70%); // DarkGrey
+/* Kevin Marsh - Feb, 2014 */
+
+////////////////////////////////////////////////////////////////////////////////
+// VARIABLES, PLACEHOLDERS and MIXINS
+////////////////////////////////////////////////////////////////////////////////
+$color-base: #c8c8c8;                           // Grey
+$color-base-lighter: lighten($color-base, 10%); // LightGrey
+$color-base-darker: darken($color-base, 70%);   // DarkGrey
+$color-highlight: #57b641;                                  // Green
+$color-highlight-lighter: lighten($color-highlight, 10%);   // LightGreen
+$color-highlight-darker: darken($color-highlight, 70%);     // DarkGreen
+$base-margin: 0.5rem;
+
+// http://colourco.de/monochrome-light/5/%23a6dd99
+// $color1: #57b641;
+// $color2: #75c861;
+// $color3: #96d686;
+// $color4: #c8c8c8;
+// $color5: #e1e1e1;
 
 %clearFix:before {
     content: '';
@@ -17,38 +32,124 @@ $color-text: darken($color-bg, 70%); // DarkGrey
     *display: inline;
     zoom: 1;
 }
+
 @mixin opacity($trans) {
     filter: alpha(opacity=($trans * 100)); // IE 5-7
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + ($trans * 100) + ")"; // IE 8
     -moz-opacity: $trans;
     opacity: $trans;
 }
+@mixin outline($color) {
+    outline: 1px dotted $color;
+}
+
+
+// Apply a natural box layout model to all elements (http://www.paulirish.com/2012/box-sizing-border-box-ftw/)
+*, *:before, *:after {
+        -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
 body {
     @extend %noSpace;
-    background-color: $color-bg;
-    color: $color-text;
+    font-size: 16px;
+    background-color: $color-base;
+    color: $color-base-darker;
     font-family: 'Cabin', Helvetica, Arial, sans-serif;
 }
+
+
+////////////////////////////////////////////////////////////////////////////////
+// _LAYOUT
+////////////////////////////////////////////////////////////////////////////////
+.bodywrapper {
+    min-width: 200px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+.left, .right {
+    padding: $base-margin;
+}
+.left {
+    width: 12.5rem;
+    position: fixed;
+    @include outline(red);
+}
+.right {
+    float: right;
+    margin-left: 12.5rem;
+    @include outline(green);
+    overflow:hidden;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// _LEFT
+////////////////////////////////////////////////////////////////////////////////
 header {
-    margin: 20px 0;
-    padding: 40px 0;
     text-align: center;
-    color: $color-bg;
-    background: $color-text url('../img/micro_carbon.png') repeat top left;
     h1 {
-        margin: 30px 0;
+        margin: 1rem 0;
+        line-height: 1;
         font: {
             family: 'Lobster', Georgia, Times, serif;
-            font-size: 60px;
+            size: 3em;
+        }
+    }
+    p {
+        font-size: 1.5em;
+    }
+}
+
+nav {
+    ul {
+        @extend %noSpace;
+        list-style-type: none;
+    }
+    li {
+        // @include opacity(0.5);
+        padding: $base-margin;
+        cursor: pointer;
+        &:hover {
+            background-color: $color-highlight-lighter;
+            // @include opacity(0.8);
+        }
+        &.selected {
+            background-color: $color-highlight;
+            @include opacity(1);
+        }
+        span {
+        }
+        img {
+            height: 2em;
+            vertical-align: middle;
+            padding-right: 0.5rem;
+            border: none;
         }
     }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+// _RIGHT
+////////////////////////////////////////////////////////////////////////////////
+.right section {
+    margin: 2rem 0 6rem 0;
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// _TODO
+////////////////////////////////////////////////////////////////////////////////
+
 a,
 a:visited,
 span.link {
     text-decoration: none;
     border-bottom: dotted 1px;
-    color: $color-text;
+    color: $color-base-darker;
     cursor: pointer;
 }
 a img,
@@ -67,51 +168,9 @@ nav * {
             transition: all 0.3s ease-out;
 }
 
-/* NAVIGATION
-------------------------------------------------------------------------------*/
-nav {
-    ul {
-        @extend %noSpace;
-        text-align: center;
-    }
-    li {
-        @extend %displayInline;
-        @include opacity(0.5);
-        height: 100px;
-        max-width: 100px;
-        margin: 0 12px;
-        padding: 6px;
-        border-radius: 4px;
-        color: $color-text;
-        cursor: pointer;
-        font-family: 'Lobster', Georgia, Times, serif;
-        &.selected {
-            @include opacity(1);
-        }
-        &:hover {
-            @include opacity(0.8);
-        }
-        img {
-            height: 50px;
-            width: 50px;
-            border: none;
-        }
-    }
-    &.selected {
-        li {
-            height: 32px;
-            max-width: 60px;
-        }
-        img {
-            height: 32px;
-            width: 32px;
-            border: none;
-        }
-        span {
-            display: none;
-        }
-    }
-}
+
+
+
 
 /* CONTENT SECTIONS
 ------------------------------------------------------------------------------*/
@@ -119,7 +178,7 @@ nav {
     min-width: 200px;
     max-width: 600px;
     margin: 20px auto 30px;
-    background: $color-content;
+    background: $color-base-lighter;
     border-radius: 4px;
     h2 {
         font-family: 'Lobster', Georgia, Times, serif;
@@ -139,7 +198,7 @@ nav {
             min-height: 40px;
             padding: 2px 2px 2px 64px;
             margin: 2px 0;
-            border: 1px solid $color-text;
+            border: 1px solid $color-base-darker;
             border-radius: 2px;
             background-color: rgb(255, 255, 255);
             background: rgba(255, 255, 255, 0.6) no-repeat 8px center;
@@ -197,9 +256,9 @@ nav {
         margin: 0 auto;
         padding: 4px 10px;
         border-radius: 6px;
-        border-color: $color-bg;
-        background: $color-text;
-        color: $color-content;
+        border-color: $color-base;
+        background: $color-base-darker;
+        color: $color-base-lighter;
         font-weight: bold;
         cursor: pointer;
         &#allGit {
