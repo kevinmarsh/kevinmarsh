@@ -4,21 +4,25 @@
 
 $(document).ready(function() {
 
+    $('.right section').not('#about').addClass('_inactive');
+
     // Scroll to the section when sidebar link is clicked
     $('nav li').on('click', function() {
         var $el = $('#' + $(this).attr('id').slice(3));
-        if ($(this).hasClass('selected')) {
+        if (!$(this).hasClass('_inactive')) {
             return false;
         }
-        $('li.selected').removeClass('selected');
-        $(this).addClass('selected');
-        $('html, body').animate({
-            scrollTop: $el.offset().top - parseInt($el.css("marginTop"), 10)
-        }, 200);
+        $('li, section').addClass('_inactive');
+        $(this).removeClass('_inactive');
+        $el.removeClass('_inactive');
+
+        // $('html, body').animate({
+        //     scrollTop: $el.offset().top - parseInt($el.css("marginTop"), 10)
+        // }, 200);
     });
 
     // Just leave the js out until have a chance to clean fadeOut
-    return false
+    return false;
 
     // Allows for non-JS browsers to show all content
     $('.contentBody section').hide();

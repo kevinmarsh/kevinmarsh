@@ -115,7 +115,7 @@ nav {
             background-color: $color-highlight-lighter;
             // @include opacity(0.8);
         }
-        &.selected {
+        &._active {
             background-color: $color-highlight;
             @include opacity(1);
         }
@@ -134,7 +134,21 @@ nav {
 // _RIGHT
 ////////////////////////////////////////////////////////////////////////////////
 .right section {
-    margin: 2rem 0 6rem 0;
+    -webkit-transition: opacity 0.3s ease-out;  // Saf3.2+, Chrome
+       -moz-transition: opacity 0.3s ease-out;  // FF4+
+        -ms-transition: opacity 0.3s ease-out;  // IE10
+         -o-transition: opacity 0.3s ease-out;  // Opera 10.5+
+            transition: opacity 0.3s ease-out;
+
+    &._inactive {
+        opacity: 0;
+        height: 0;
+        overflow: hidden;
+    }
+    // &._active {
+    //     opacity: 1;
+    //     height: auto;
+    // }
 }
 
 
