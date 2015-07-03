@@ -1,0 +1,39 @@
+body {
+    background-color: #383838;
+    color: #F8F8F8;
+    font-family: 'Ubuntu', serif;
+    font-size: 16px;
+    width: auto;
+    max-width: 700px;
+    margin: auto;
+    padding: 20px;
+}
+header {
+    color: #EEEEEE;
+    margin: 6em auto;
+}
+header h1 {
+    margin: 0;
+    font-family: 'Abel', sans-serif;
+    font-size: 4em;
+}
+header a,
+header a:visited,
+header a:active {
+    color: #FF974F;
+    text-decoration: none;
+}
+header a:hover {
+    color: #F54F29;
+}
+
+#feed {
+    margin: 20px auto;
+    height: 600px;
+}
+
+.gha-header,
+.gha-push,
+.gha-footer {
+    display: none;
+}

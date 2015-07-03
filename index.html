@@ -2,58 +2,39 @@
 <html>
 <head>
     <title>Kevin Marsh - Web Developer</title>
-    <!-- new site coming one day -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
-    <meta name="description" content="Front-end web developer working in HTML, CSS, Javascript, jQuery, Python, Django and Google App Engine">
+    <meta name="description" content="Full stack web developer working with Python, Django, Javascript, HTML5, CSS3, jQuery and much more">
     <meta name="keywords" content="web developer, Python, Django, HTML, CSS, Javascript, jQuery">
     <meta name="author" content="Kevin Marsh">
 
     <link rel="icon" type="image/png" href="img/favicon.png" />
-    <link href="http://fonts.googleapis.com/css?family=Vollkorn&family=Ubuntu" rel="stylesheet" type="text/css">
-
-    <style type="text/css">
-        body {
-            text-align: center;
-            color: #cccccc;
-            background: url("dark_exa.png") #0f0f0f;
-            font-size: 16px;
-            padding: 20px;
-        }
-        header h1 {
-            font-family: 'Vollkorn', serif;
-            font-size: 4em;
-        }
-        p {
-            font-family: "Ubuntu", sans-serif;
-        }
-        a, a:visited, a:active {
-            color: #cccccc;
-            text-decoration: none;
-            border-bottom: 1px dotted #cccccc;
-        }
-        a:hover {
-            border-bottom-style: solid;
-        }
-    </style>
+    <link href="//fonts.googleapis.com/css?family=Abel&family=Ubuntu" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/octicons/2.0.2/octicons.min.css">
+    <link rel="stylesheet" href="css/github-activity-0.1.1.css">
+    <link rel="stylesheet" href="css/github-activity-dark-0.1.1.css">
+    <link rel="stylesheet" href="css/site.css">
 </head>
 <body>
     <header>
         <h1>Kevin Marsh</h1>
-        <p>Full stack web developer</p>
+        <p>Full stack web developer at <a href="http://about.beauhurst.com">Beauhurst</a> in London</p>
+        <p><small>Python | Django | Javascript | Linux</small></p>
     </header>
 
-    <img src="raw/icon_79272_white.svg" width="120px" />
-    <img src="raw/Octicons-mark-github-white.svg" width="120px" />
-    <p>Apologies, I've temporarily removed my website since it had become so outdated<br/>and I don't really have time to get it back up to par at the moment</p>
-    <p>
-        <a href="http://www.google.com/recaptcha/mailhide/d?k=01Il8t58lSTBT_dr1XVjV78g==&amp;c=Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8=" onclick="window.open('http://www.google.com/recaptcha/mailhide/d?k\07501Il8t58lSTBT_dr1XVjV78g\75\75\46c\75Govbn54uk4JxW4JTLohiDSk6hhCAKPtV8-i_1Pm5sE8\075', '', 'toolbar=0,scrollbars=0,location=0,statusbar=0,menubar=0,resizable=0,width=500,height=300'); return false;" title="Reveal this e-mail address">
-            email
-        </a> || <a href="https://github.com/kevinmarsh">github</a>
-    </p>
+    <div id="feed"></div>
 
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mustache.js/0.7.2/mustache.min.js"></script>
+    <script type="text/javascript" src="js/github-activity-0.1.1.js"></script>
     <script type="text/javascript">
+        window.onload = function () {
+            GitHubActivity.feed({
+                username: "kevinmarsh",
+                selector: "#feed"
+            });
+        };
+
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-27371054-1']);
         _gaq.push(['_trackPageview']);
