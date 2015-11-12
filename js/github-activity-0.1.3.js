@@ -1,8 +1,8 @@
 /*!
- * GitHub Activity Stream - v0.1.0 - 7/28/2014
+ * GitHub Activity Stream - v0.1.3 - 10/7/2015
  * https://github.com/caseyscarborough/github-activity
  *
- * Copyright (c) 2014 Casey Scarborough
+ * Copyright (c) 2015 Casey Scarborough
  * MIT License
  * http://opensource.org/licenses/MIT
  */
@@ -78,7 +78,7 @@ var GitHubActivity = (function() {
       // Retrieve the pull request link if this is a PullRequestEvent.
       if (p.pull_request) {
         var pr = p.pull_request;
-        data.pullRequestLink = methods.renderLink(p.html_url, data.repo.name + "#" + pr.number);
+        data.pullRequestLink = methods.renderLink(pr.html_url, data.repo.name + "#" + pr.number);
         data.mergeMessage = "";
 
         // If this was a merge, set the merge message.
@@ -174,27 +174,43 @@ var GitHubActivity = (function() {
 
       return text;
     },
-    getOutputFromRequest: function(url, func) {
-      var text, data, request = new XMLHttpRequest();
-      request.open('GET', url, false);
+    getOutputFromRequest: function(url, callback) {
+      var request = new XMLHttpRequest();
+      request.open('GET', url);
+      request.setRequestHeader('Accept', 'application/vnd.github.v3+json');
 
-      request.onload = function() {
-        if (request.status >= 200 && request.status < 400){
-          data = JSON.parse(request.responseText);
-          text = func(data);
-        } else {
-          // An error occurred.
-          return false;
+      request.onreadystatechange = function() {
+        if (request.readyState === 4) {
+          if (request.status >= 200 && request.status < 300){
+            var data = JSON.parse(request.responseText);
+            callback(undefined, data);
+          } else {
+            callback('request for ' + url + ' yielded status ' + request.status);
+          }
         }
       };
 
-      request.onerror = function() { console.log('An error occurred connecting to the url.'); };
+      request.onerror = function() { callback('An error occurred connecting to ' + url); };
       request.send();
-      return text;
     },
     renderStream: function(output, div) {
       div.innerHTML = Mustache.render(templates.Stream, { text: output, footer: templates.Footer });
       div.style.position = 'relative';
+    },
+    writeOutput: function(selector, content) {
+      var div = selector.charAt(0) === '#' ? document.getElementById(selector.substring(1)) : document.getElementsByClassName(selector.substring(1));
+      if (div instanceof HTMLCollection) {
+        for (var i = 0; i < div.length; i++) {
+          methods.renderStream(content, div[i]);
+        }
+      } else {
+        methods.renderStream(content, div);
+      }
+    },
+    renderIfReady: function(selector, header, activity) {
+      if (header && activity) {
+        methods.writeOutput(selector, header + activity);
+      }
     }
   };
 
@@ -207,8 +223,8 @@ var GitHubActivity = (function() {
     var selector = options.selector,
         userUrl   = 'https://api.github.com/users/' + options.username,
         eventsUrl = userUrl + '/events',
-        output,
-        div;
+        header,
+        activity;
 
     if (!!options.repository){
       eventsUrl = 'https://api.github.com/repos/' + options.username + '/' + options.repository + '/events';
@@ -220,6 +236,10 @@ var GitHubActivity = (function() {
       eventsUrl += authString;
     }
 
+    if (!!options.eventsUrl){
+      eventsUrl = options.eventsUrl;
+    }
+
     // Allow templates override
     if (typeof options.templates == 'object') {
       for (var template in templates) {
@@ -229,30 +249,24 @@ var GitHubActivity = (function() {
       }
     }
 
-    output = methods.getOutputFromRequest(userUrl, methods.getHeaderHTML);
-    if (output) {
-      // User was found.
-      var limit;
-      if (options.limit != 'undefined') {
-         limit = parseInt(options.limit, 10);
+    methods.getOutputFromRequest(userUrl, function(error, output) {
+      if (error) {
+        header = Mustache.render(templates.UserNotFound, { username: options.username });
       } else {
-         limit = null;
+        header = methods.getHeaderHTML(output)
       }
-      output += methods.getOutputFromRequest(eventsUrl, function(data) {
-        return methods.getActivityHTML(data, limit);
-      });
-    } else {
-      output = Mustache.render(templates.NotFound, { username: options.username });
-    }
+      methods.renderIfReady(selector, header, activity)
+    });
 
-    div = selector.charAt(0) === '#' ? document.getElementById(selector.substring(1)) : document.getElementsByClassName(selector.substring(1));
-    if (div instanceof HTMLCollection) {
-      for (var i = 0; i < div.length; i++) {
-        methods.renderStream(output, div[i]);
+    methods.getOutputFromRequest(eventsUrl, function(error, output) {
+      if (error) {
+        activity = Mustache.render(templates.EventsNotFound, { username: options.username });
+      } else {
+        var limit = options.limit != 'undefined' ? parseInt(options.limit, 10) : null;
+        activity = methods.getActivityHTML(output, limit);
       }
-    } else {
-      methods.renderStream(output, div);
-    }
+      methods.renderIfReady(selector, header, activity);
+    });
   };
 
   return obj;
@@ -319,7 +333,8 @@ var templates = {
                </div><div class="gha-push"></div>',
   Footer: '<div class="gha-footer">Public Activity <a href="https://github.com/caseyscarborough/github-activity" target="_blank">GitHub Activity Stream</a>',
   NoActivity: '<div class="gha-info">This user does not have any public activity yet.</div>',
-  NotFound: '<div class="gha-info">User {{username}} wasn\'t found.</div>',
+  UserNotFound: '<div class="gha-info">User {{username}} wasn\'t found.</div>',
+  EventsNotFound: '<div class="gha-info">Events for user {{username}} not found.</div>',
   CommitCommentEvent: 'commented on commit {{{commentLink}}}<br>{{{userGravatar}}}<small>{{comment}}</small>',
   CreateEvent: 'created {{payload.ref_type}} {{{branchLink}}}{{{repoLink}}}',
   DeleteEvent: 'deleted {{payload.ref_type}} {{payload.ref}} at {{{repoLink}}}',
